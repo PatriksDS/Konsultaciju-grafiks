@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="hdr">
+  <div style="font-weight:900; font-size:22px; letter-spacing:-0.5px;">ĶVKG</div>
+</div>
+
+<div class="card" style="max-width: 550px; margin: 40px auto;">
+  <div style="font-weight:900; font-size:24px; margin-bottom:10px; text-align:center; color:#0f172a;">Pieslēgties</div>
+  <p style="text-align:center; color:var(--muted); margin-bottom:28px;">Ievadi savus datus lai turpinātu</p>
+
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <div class="flash">{{ messages[0] }}</div>
+    {% endif %}
+  {% endwith %}
+
+  <form method="post" style="margin-top:20px;">
+    <div style="margin-bottom:18px;">
+      <div class="small field-label">Tips</div>
+      <select class="select" name="tips" required>
+        <option value="skolens">Skolēns</option>
+        <option value="skolotajs">Skolotājs</option>
+      </select>
+    </div>
+
+    <div style="margin-bottom:18px;">
+      <div class="small field-label">Lietotājvārds</div>
+      <input class="input" name="lietotajvards" placeholder="Ievadi lietotājvārdu" required>
+    </div>
+
+    <div style="margin-bottom:24px;">
+      <div class="small field-label">Parole</div>
+      <input class="input" type="password" name="parole" placeholder="••••••••" required>
+    </div>
+
+    <button class="btn btn-primary" style="width:100%; font-size:15px; padding:13px;">
+      Pieslēgties
+    </button>
+  </form>
+</div>
+{% endblock %}

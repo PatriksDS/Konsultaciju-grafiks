@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="hdr">
+  <div style="font-weight:900; font-size:22px; letter-spacing:-0.5px;">Skolēns - ĶVKG</div>
+  <div style="display:flex; gap:12px; align-items:center;">
+    <div style="text-align:right; padding:8px 14px; background:rgba(255,255,255,0.15); border-radius:10px;">
+      <div style="font-weight:800; font-size:14px;">{{ user.profils }}</div>
+      <div class="small">{{ user.klase }}</div>
+    </div>
+    <form method="post" action="{{ url_for('logout') }}">
+      <button class="btn btn-ghost">Iziet</button>
+    </form>
+  </div>
+</div>
+
+<div class="card">
+  <form method="get" class="filters-grid">
+    <div class="field">
+      <div class="small field-label">Skolotājs</div>
+      <select class="select" name="teacher">
+        <option {{ 'selected' if teacher_filter == 'Skolotājs' else '' }}>Visi skolotāji</option>
+        {% for t in teacher_names %}
+          <option value="{{ t }}" {{ 'selected' if teacher_filter == t else '' }}>{{ t }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="field">
+      <div class="small field-label">Priekšmets</div>
+      <select class="select" name="subject">
+        <option {{ 'selected' if subject_filter == 'Priekšmets' else '' }}>Visi priekšmeti</option>
+        {% for s in subjects %}
+          <option value="{{ s }}" {{ 'selected' if subject_filter == s else '' }}>{{ s }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="field">
+      <div class="small field-label">Datums (DD.MM.GGGG)</div>
+      <input class="input" name="date" value="{{ date_filter }}" placeholder="DD.MM.GGGG">
+    </div>
+
+    <div class="field">
+      <button class="btn btn-ghost" style="width:100%;">Filtrēt</button>
+    </div>
+  </form>
+
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <div class="flash flash-sticky" id="flashBox">
+        <div style="display:flex; justify-content:space-between; gap:10px; align-items:flex-start;">
+          <div>{{ messages[0] }}</div>
+          <button class="flash-close" type="button" onclick="document.getElementById('flashBox').style.display='none'">×</button>
+        </div>
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <div style="height:18px;"></div>
+
+  <div class="desktop-table">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Skolotājs</th>
+            <th>Priekšmets</th>
+            <th>Kabinets</th>
+            <th>Laiks</th>
+            <th>Diena</th>
+            <th>Darbība</th>
+            <th style="width:170px;"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if rows %}
+            {% for t in rows %}
+              {% set applied = exists_for(t) %}
+              {% set cnt = count_for(t) %}
+              <tr>
+                <td style="font-weight:700;">{{ t.profils }}</td>
+                <td>{{ t.prieksmets }}</td>
+                <td><span class="pill">{{ t.kabinets }}</span></td>
+                <td><span class="pill">{{ t.laiks }}</span></td>
+                <td>{{ t.nedelas_diena }}</td>
+                <td>
+                  {% if applied %}
+                    <span style="color:#10b981; font-weight:600; font-size:13px;">✓ Pieteicies</span>
+                  {% else %}
+                    <form method="post" action="{{ url_for('student_apply') }}" class="row" style="gap:7px; align-items:center; margin:0;">
+                      <input type="hidden" name="skolotajs" value="{{ t.profils }}">
+                      <input type="hidden" name="prieksmets" value="{{ t.prieksmets }}">
+                      <input type="hidden" name="kabinets" value="{{ t.kabinets }}">
+                      <input type="hidden" name="laiks" value="{{ t.laiks }}">
+                      <input type="hidden" name="nedelas_diena" value="{{ t.nedelas_diena }}">
+                      <input type="hidden" name="datums" value="{{ date_filter }}">
+                      <select class="select" name="iemesls" style="min-width:130px;" required>
+                        <option value="">Iemesls</option>
+                        <option value="PD">PD</option>
+                        <option value="Mācīties">Mācīties</option>
+                        <option value="Cits">Cits</option>
+                      </select>
+                      <button class="btn btn-primary" style="font-size:13px;">
+                        Pieteikties ({{ cnt }})
+                      </button>
+                    </form>
+                  {% endif %}
+                </td>
+                <td>
+                  {% if applied %}
+                    <form method="post" action="{{ url_for('student_cancel') }}" style="margin:0;">
+                      <input type="hidden" name="skolotajs" value="{{ t.profils }}">
+                      <button class="btn btn-danger" style="width:100%; font-size:13px;">
+                        Atteikties ({{ cnt }})
+                      </button>
+                    </form>
+                  {% else %}
+                    <span class="small">—</span>
+                  {% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+          {% else %}
+            <tr>
+              <td colspan="7" style="text-align:center; padding:28px; color:var(--muted);">
+                Nav pieejamu konsultāciju
+              </td>
+            </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="mobile-cards">
+    {% if rows %}
+      {% for t in rows %}
+        {% set applied = exists_for(t) %}
+        {% set cnt = count_for(t) %}
+        <div class="teacher-card">
+          <div class="teacher-top">
+            <div>
+              <div class="teacher-name">{{ t.profils }}</div>
+              <div class="small" style="margin-top:4px;">{{ t.prieksmets }}</div>
+            </div>
+            <div style="text-align:right;">
+              <div class="pill">{{ t.kabinets }}</div>
+              <div class="pill" style="margin-top:6px;">{{ t.laiks }}</div>
+            </div>
+          </div>
+
+          <div class="teacher-meta">
+            <div class="small">Diena</div>
+            <div style="font-weight:800;">{{ t.nedelas_diena }}</div>
+            <div class="small">Pieteikumi</div>
+            <div style="font-weight:800;">{{ cnt }}</div>
+          </div>
+
+          <div class="teacher-actions">
+            {% if applied %}
+              <div style="color:#10b981; font-weight:600; padding:8px 0;">✓ Tu jau esi pieteicies</div>
+              <form method="post" action="{{ url_for('student_cancel') }}" style="margin:0;">
+                <input type="hidden" name="skolotajs" value="{{ t.profils }}">
+                <button class="btn btn-danger">Atteikties ({{ cnt }})</button>
+              </form>
+            {% else %}
+              <form method="post" action="{{ url_for('student_apply') }}" style="margin:0;">
+                <input type="hidden" name="skolotajs" value="{{ t.profils }}">
+                <input type="hidden" name="prieksmets" value="{{ t.prieksmets }}">
+                <input type="hidden" name="kabinets" value="{{ t.kabinets }}">
+                <input type="hidden" name="laiks" value="{{ t.laiks }}">
+                <input type="hidden" name="nedelas_diena" value="{{ t.nedelas_diena }}">
+                <input type="hidden" name="datums" value="{{ date_filter }}">
+
+                <select class="select" name="iemesls" required>
+                  <option value="">Izvēlies iemeslu</option>
+                  <option value="PD">PD</option>
+                  <option value="Mācīties">Mācīties</option>
+                  <option value="Cits">Cits</option>
+                </select>
+
+                <button class="btn btn-primary">Pieteikties ({{ cnt }})</button>
+              </form>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <div style="text-align:center; padding:40px 16px; color:var(--muted);">
+        Nav pieejamu konsultāciju
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

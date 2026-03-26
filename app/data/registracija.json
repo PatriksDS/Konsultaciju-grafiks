@@ -1,0 +1,70 @@
+{
+  "users": [
+    {
+      "tips": "skolens",
+      "lietotajvards": "janis",
+      "parole": "123",
+      "profils": "Janis Berzinš",
+      "klase": "10.B",
+      "prieksmets": "",
+      "kabinets": "",
+      "laiks": "",
+      "nedelas_diena": ""
+    },
+    {
+      "tips": "skolens",
+      "lietotajvards": "laura",
+      "parole": "123",
+      "profils": "Laura Ozola",
+      "klase": "9.A",
+      "prieksmets": "",
+      "kabinets": "",
+      "laiks": "",
+      "nedelas_diena": ""
+    },
+    {
+      "tips": "skolotajs",
+      "lietotajvards": "roberts",
+      "parole": "112",
+      "profils": "Roberts Briedis",
+      "klase": "",
+      "prieksmets": "Dizains un tehnologija",
+      "kabinets": "102",
+      "laiks": "15:15",
+      "nedelas_diena": "Pirmdiena"
+    },
+    {
+      "tips": "skolotajs",
+      "lietotajvards": "ilze",
+      "parole": "112",
+      "profils": "Ilze Kalnina",
+      "klase": "",
+      "prieksmets": "Matematika",
+      "kabinets": "210",
+      "laiks": "14:30",
+      "nedelas_diena": "Trešdiena"
+    },
+    {
+      "tips": "skolotajs",
+      "lietotajvards": "andris",
+      "parole": "112",
+      "profils": "Andris Liepa",
+      "klase": "",
+      "prieksmets": "Fizika",
+      "kabinets": "305",
+      "laiks": "16:00",
+      "nedelas_diena": "Piektdiena"
+    },
+    {
+      "tips": "skolotajs",
+      "lietotajvards": "elizabete",
+      "parole": "112",
+      "profils": "Elizabete Jansone",
+      "klase": "",
+      "prieksmets": "Ķīmija",
+      "kabinets": "306",
+      "laiks": "14:00",
+      "nedelas_diena": "otrdiena"
+    }
+  ]
+}

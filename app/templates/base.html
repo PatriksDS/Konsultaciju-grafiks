@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="lv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ĶVKG</title>
+<style>
+  :root {
+    --brand: #dc2626;
+    --brand-dark: #991b1b;
+    --bg: #f1f5f9;
+    --card: #ffffff;
+    --border: #e2e8f0;
+    --muted: #64748b;
+    --danger: #ef4444;
+    --flash-bg: #fef3c7;
+    --flash-border: #fbbf24;
+    --flash-text: #92400e;
+    --radius: 14px;
+    --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    margin: 0;
+    color: #1e293b;
+    min-height: 100vh;
+  }
+
+  .wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 16px;
+  }
+
+  .hdr {
+    background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%);
+    color: #fff;
+    padding: 18px 22px;
+    border-radius: var(--radius);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-top: 20px;
+    box-shadow: var(--shadow);
+  }
+
+  .row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: flex-end;
+  }
+
+  .input, .select {
+    padding: 11px 14px;
+    border: 2px solid #e2e8f0;
+    border-radius: 11px;
+    background: #fff;
+    font-size: 15px;
+    width: 100%;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+
+  .input:focus, .select:focus {
+    outline: none;
+    border-color: var(--brand);
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+  }
+
+  .btn {
+    border: 0;
+    padding: 11px 18px;
+    border-radius: 11px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 14px;
+    white-space: nowrap;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+
+  .btn-primary { 
+    background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%);
+    color: #fff;
+    box-shadow: 0 4px 6px -1px rgba(220, 38, 38, 0.3);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px -1px rgba(220, 38, 38, 0.4);
+  }
+
+  .btn-danger { 
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: #fff;
+    box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.3);
+  }
+
+  .btn-danger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px -1px rgba(239, 68, 68, 0.4);
+  }
+
+  .btn-ghost { 
+    background: rgba(255, 255, 255, 0.9);
+    color: #0f172a;
+  }
+
+  .btn-ghost:hover {
+    background: #fff;
+    transform: translateY(-1px);
+  }
+
+  .small { 
+    color: var(--muted); 
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  table { 
+    width: 100%; 
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  th, td { 
+    padding: 13px 15px;
+    text-align: left; 
+    vertical-align: middle;
+  }
+
+  th { 
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #475569;
+    border-bottom: 2px solid var(--border);
+  }
+
+  th:first-child {
+    border-top-left-radius: 11px;
+  }
+
+  th:last-child {
+    border-top-right-radius: 11px;
+  }
+
+  tbody tr {
+    transition: all 0.2s;
+    border-bottom: 1px solid var(--border);
+  }
+
+  tbody tr:hover {
+    background: #f8fafc;
+  }
+
+  .pill {
+    display: inline-block;
+    padding: 5px 11px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+    font-size: 13px;
+    font-weight: 600;
+    color: #475569;
+  }
+
+  .flash {
+    background: var(--flash-bg);
+    border: 2px solid var(--flash-border);
+    padding: 13px 16px;
+    border-radius: 11px;
+    color: var(--flash-text);
+    margin-top: 14px;
+    font-weight: 600;
+    box-shadow: var(--shadow);
+  }
+
+  .flash-sticky {
+    position: sticky;
+    top: 14px;
+    z-index: 10;
+  }
+
+  .flash-close {
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    font-weight: 900;
+    color: var(--flash-text);
+    padding: 0 0 0 10px;
+    font-size: 18px;
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 11px;
+    margin-top: 14px;
+  }
+
+  .filters-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .field-label {
+    margin-bottom: 7px;
+    font-weight: 600;
+    color: #475569;
+  }
+
+  .field {
+    min-width: 0;
+  }
+
+  @media (min-width: 720px) {
+    .wrap { padding: 28px 20px; }
+    .filters-grid {
+      grid-template-columns: 1.2fr 1.2fr 0.9fr 0.6fr;
+      align-items: end;
+    }
+    .card { padding: 28px; }
+  }
+
+  @media (max-width: 719px) {
+    .hdr {
+      flex-direction: column;
+      align-items: stretch;
+      padding: 15px;
+    }
+    .hdr-right {
+      justify-content: space-between;
+    }
+    th, td {
+      padding: 9px;
+    }
+    .btn {
+      width: 100%;
+    }
+    .card {
+      padding: 18px;
+    }
+  }
+
+  .mobile-cards {
+    display: none;
+  }
+
+  @media (max-width: 719px) {
+    .desktop-table {
+      display: none;
+    }
+    .mobile-cards {
+      display: block;
+    }
+    .teacher-card {
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      padding: 15px;
+      margin-top: 11px;
+      background: #fff;
+      box-shadow: var(--shadow);
+      transition: all 0.2s;
+    }
+    .teacher-card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-2px);
+    }
+    .teacher-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 11px;
+      align-items: flex-start;
+    }
+    .teacher-name {
+      font-weight: 900;
+      font-size: 17px;
+      color: #0f172a;
+    }
+    .teacher-meta {
+      margin-top: 11px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7px;
+      padding: 11px;
+      background: #f8fafc;
+      border-radius: 9px;
+    }
+    .teacher-actions {
+      margin-top: 11px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 9px;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    {% block body %}{% endblock %}
+  </div>
+</body>
+</html>
